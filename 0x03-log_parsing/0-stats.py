@@ -5,6 +5,7 @@ The Log parsing
 
 import sys
 
+
 if __name__ == '__main__':
 
     f_size, count = 0, 0
