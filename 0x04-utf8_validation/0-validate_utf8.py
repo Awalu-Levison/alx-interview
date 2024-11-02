@@ -12,6 +12,12 @@ def validUTF8(data):
     try:
         data.decode('utf-8')
         return True
-
     except UnicodeDecodeError:
         return False
+
+    with open('my_file.txt', 'rb') as file:
+        content = file.read()
+        if validUTF8(content):
+            return True
+        else:
+            return False
