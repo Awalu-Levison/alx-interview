@@ -2,8 +2,8 @@
 """UTF-8 Validation"""
 
 
-def get_leading_set_bits(num):
-    """returns the number of leading set bits (1)"""
+def get_bit_len(num):
+    """find the number of leading set bits"""
     set_bits = 0
     helper = 1 << 7
     while helper & num:
@@ -13,11 +13,11 @@ def get_leading_set_bits(num):
 
 
 def validUTF8(data):
-    """determines if a given data set represents a valid UTF-8 encoding"""
+    """identify the utf-8 data representation"""
     bits_count = 0
     for i in range(len(data)):
         if bits_count == 0:
-            bits_count = get_leading_set_bits(data[i])
+            bits_count = get_bit_len(data[i])
             '''1-byte (format: 0xxxxxxx)'''
             if bits_count == 0:
                 continue
