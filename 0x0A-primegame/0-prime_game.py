@@ -15,7 +15,8 @@ def isWinner(x, nums):
     win1: Maria won games
     win2: Ben won games
     """
-    # generate primes with a limit of the maximum number in nums
+    """generate primes with a limit
+    of the maximum number in nums"""
     n = max(nums)
     primes = [True for _ in range(1, n + 1, 1)]
     primes[0] = False
@@ -24,7 +25,8 @@ def isWinner(x, nums):
             continue
         for j in range(i + i, n + 1, i):
             primes[j - 1] = False
-    # filter the number of primes less than n in nums for each round
+    """identify the number of primes less than
+    n in nums for each round"""
     for _, n in zip(range(x), nums):
         primes_count = len(list(filter(lambda x: x, primes[0: n])))
         win2 += primes_count % 2 == 0
