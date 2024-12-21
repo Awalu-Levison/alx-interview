@@ -1,39 +1,53 @@
 #!/usr/bin/python3
-"""
-Log parsing
+"""This function parses a log from stdin
+and displays its metrics based on the
+given format
 """
 
 import sys
+import re
 
-if __name__ == '__main__':
 
-    filesize, count = 0, 0
-    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
-    stats = {k: 0 for k in codes}
+def print_mydict(total size, mydict):
+    """Prints the dictionary of status codes
+    parsed from the stdin in assorting order
+    Args:
+        total_size: the size of the parsed logn from the stdin
+        mydict: given status codes
+    """
+    print("File size: {}".format(total_size))
+    for key in sorted(mydict.keys()):
+        if mydict[key] != 0:
+            print("{}: {}".format(key, mydict[key]))
 
-    def print_stats(stats: dict, file_size: int) -> None:
-        print("File size: {:d}".format(filesize))
-        for k, v in sorted(stats.items()):
-            if v:
-                print("{}: {}".format(k, v))
 
-    try:
-        for line in sys.stdin:
-            count += 1
-            data = line.split()
+my_count = 0
+total_size = 0
+mydict = {
+    "200": 0,
+    "301": 0,
+    "400": 0,
+    "401": 0,
+    "403": 0,
+    "404": 0,
+    "405": 0,
+    "500": 0,
+}
+
+try:
+    for line in sys.stdin:
+        my_log = line.split()
+        if len(my_log) > 2:
+            my_count += 1
             try:
-                status_code = data[-2]
-                if status_code in stats:
-                    stats[status_code] += 1
-            except BaseException:
-                pass
-            try:
-                filesize += int(data[-1])
-            except BaseException:
-                pass
-            if count % 10 == 0:
-                print_stats(stats, filesize)
-        print_stats(stats, filesize)
-    except KeyboardInterrupt:
-        print_stats(stats, filesize)
-        raise
+                my_code = my_log[-2]
+                file_size = int(my_log[-1])
+                if my_code in mydict.keys():
+                    mydict[my_code] += 1
+                    total_size += file_size
+                    if my_count % 10 == 0:
+                        print_mydict(total_size, mydict)
+            except Exception:
+                continue
+finally:
+    print_mydict(total_size, mydict)
